@@ -1,8 +1,8 @@
 import os
 import librosa
 import librosa.display
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
 def convert_wav_to_spectrogram(input_folder, output_folder):
     # Check if the provided folder paths exist
@@ -44,6 +44,6 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
 
 if __name__ == "__main__":
     # Usage example
-    input_folder = "/content/drive/Shareddrives/CS231FinalProject/downsamples/downsamples_train"  # Replace with the actual input folder path
-    output_folder = "/content/drive/Shareddrives/CS231FinalProject/spectrograms/lq/lq_train"  # Replace with the actual output folder path
+    input_folder = "../downsamples_train"  # Replace with the actual input folder path
+    output_folder = "../spectrograms/train"  # Replace with the actual output folder path
     convert_wav_to_spectrogram(input_folder, output_folder)
