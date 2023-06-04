@@ -18,6 +18,9 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
     # Iterate through all files in the input folder
     for filename in os.listdir(input_folder):
         if filename.endswith(".wav"):
+            if str(filename[:-4]) + ".png" in os.listdir(output_folder):
+                # print("found repeat")
+                continue
             file_path = os.path.join(input_folder, filename)
             output_path = os.path.join(output_folder, f"{filename[:-4]}.png")
 
@@ -36,7 +39,6 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
             if count %50 == 0:
               print(f'{count} spectrograms produced')
             count += 1
-            librosa.cache.clear()
 
     print(f"{count} spectrograms have been generated for all .wav files.")
 
@@ -44,6 +46,6 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
 
 if __name__ == "__main__":
     # Usage example
-    input_folder = "../downsamples_train"  # Replace with the actual input folder path
-    output_folder = "../spectrograms/train"  # Replace with the actual output folder path
+    input_folder = "../downsamples_val"  # Replace with the actual input folder path
+    output_folder = "../spectrograms/val"  # Replace with the actual output folder path
     convert_wav_to_spectrogram(input_folder, output_folder)
