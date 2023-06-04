@@ -14,10 +14,27 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
         return
     
     count = 0
+    # hq_path = "/spectrograms/hq"
+    hq_path_train = "Spectrograms/hq/train"
+    hq_path_val = "Spectrograms/hq/val"
+    # hq_specs = os.listdir(hq_path)
+    lq_specs_train = os.listdir("Spectrograms/lq/train")
+    lq_specs_val = os.listdir("Spectrograms/lq/val")
+    print(f'Num files in lq_specs_train: {len(lq_specs_train)}')
+    print(f'Num files in lq_specs_val: {len(lq_specs_val)}')
+
 
     # Iterate through all files in the input folder
     for filename in os.listdir(input_folder):
         if filename.endswith(".wav"):
+            print(filename)
+            if str(filename[:-4]) + ".png" in lq_specs_train:
+                output_folder = hq_path_train
+            elif str(filename[:-4]) + ".png" in lq_specs_val:
+                output_folder = hq_path_val
+            else: 
+                print("File not found in any lq folders")
+                break
             if str(filename[:-4]) + ".png" in os.listdir(output_folder):
                 # print("found repeat")
                 continue
@@ -36,9 +53,9 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
             plt.tight_layout()
             plt.savefig(output_path, bbox_inches="tight", pad_inches=0)
             plt.close()
+            count += 1
             if count %50 == 0:
               print(f'{count} spectrograms produced')
-            count += 1
 
     print(f"{count} spectrograms have been generated for all .wav files.")
 
@@ -46,6 +63,6 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
 
 if __name__ == "__main__":
     # Usage example
-    input_folder = "../downsamples_val"  # Replace with the actual input folder path
-    output_folder = "../spectrograms/val"  # Replace with the actual output folder path
+    input_folder = "../hq_clips"  # Replace with the actual input folder path
+    output_folder = "Spectrograms/hq/train"  # Replace with the actual output folder path
     convert_wav_to_spectrogram(input_folder, output_folder)
