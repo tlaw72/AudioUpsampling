@@ -14,10 +14,9 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
         return
     
     count = 0
-    # hq_path = "/spectrograms/hq"
+
     hq_path_train = "Spectrograms/hq/train"
     hq_path_val = "Spectrograms/hq/val"
-    # hq_specs = os.listdir(hq_path)
     lq_specs_train = os.listdir("Spectrograms/lq/train")
     lq_specs_val = os.listdir("Spectrograms/lq/val")
     print(f'Num files in lq_specs_train: {len(lq_specs_train)}')
@@ -27,17 +26,17 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
     # Iterate through all files in the input folder
     for filename in os.listdir(input_folder):
         if filename.endswith(".wav"):
-            print(filename)
+
+            # Make sure to separate train and val correctly
             if str(filename[:-4]) + ".png" in lq_specs_train:
                 output_folder = hq_path_train
             elif str(filename[:-4]) + ".png" in lq_specs_val:
                 output_folder = hq_path_val
             else: 
-                print("File not found in any lq folders")
+                print(f"File {filename} not found in any lq folders")
                 break
-            if str(filename[:-4]) + ".png" in os.listdir(output_folder):
-                # print("found repeat")
-                continue
+            if str(filename[:-4]) + ".png" in os.listdir(output_folder): continue
+
             file_path = os.path.join(input_folder, filename)
             output_path = os.path.join(output_folder, f"{filename[:-4]}.png")
 
@@ -58,11 +57,15 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
               print(f'{count} spectrograms produced')
 
     print(f"{count} spectrograms have been generated for all .wav files.")
+    hq_specs_train = os.listdir(hq_path_train)
+    hq_specs_val = os.listdir(hq_path_val)
+    print(f'Num files in hq_specs_train: {len(hq_specs_train)}')
+    print(f'Num files in hq_specs_val: {len(hq_specs_val)}')
 
 
 
 if __name__ == "__main__":
     # Usage example
-    input_folder = "../hq_clips"  # Replace with the actual input folder path
+    input_folder = "../hq_clips 3"  # Replace with the actual input folder path
     output_folder = "Spectrograms/hq/train"  # Replace with the actual output folder path
     convert_wav_to_spectrogram(input_folder, output_folder)
