@@ -3,6 +3,8 @@ import librosa
 import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
+import io
+from PIL import Image
 
 def convert_wav_to_spectrogram(input_folder, output_folder):
     # Check if the provided folder paths exist
@@ -15,10 +17,10 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
     
     count = 0
 
-    hq_path_train = "Spectrograms/hq/train"
-    hq_path_val = "Spectrograms/hq/val"
-    lq_specs_train = os.listdir("Spectrograms/lq/train")
-    lq_specs_val = os.listdir("Spectrograms/lq/val")
+    hq_path_train = "Spectrograms/train/hq_train"
+    hq_path_val = "Spectrograms/val/hq_val"
+    lq_specs_train = os.listdir("Spectrograms/train/lq_train")
+    lq_specs_val = os.listdir("Spectrograms/val/lq_val")
     print(f'Num files in lq_specs_train: {len(lq_specs_train)}')
     print(f'Num files in lq_specs_val: {len(lq_specs_val)}')
 
@@ -35,7 +37,7 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
             else: 
                 print(f"File {filename} not found in any lq folders")
                 break
-            if str(filename[:-4]) + ".png" in os.listdir(output_folder): continue
+            # if str(filename[:-4]) + ".png" in os.listdir(output_folder): continue
 
             file_path = os.path.join(input_folder, filename)
             output_path = os.path.join(output_folder, f"{filename[:-4]}.png")
@@ -43,16 +45,30 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
             # Load the audio file and compute the spectrogram
             y, sr = librosa.load(file_path)
             spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=1024, n_fft=2048)
+            print(type(spectrogram))
+            print(spectrogram.shape)
             spectrogram_db = librosa.power_to_db(spectrogram, ref=np.max)
-
+            print(type(spectrogram_db))
+            print(spectrogram_db.shape)
+            # return
             # Plot and save the spectrogram
             plt.figure(figsize=(10, 4), dpi=600)
             librosa.display.specshow(spectrogram_db, sr=sr, x_axis="time", y_axis="mel")
             plt.axis("off")  # Turn off axis labels and ticks
             plt.tight_layout()
-            plt.savefig(output_path, bbox_inches="tight", pad_inches=0)
-            plt.close()
+            # plt.savefig(output_path, bbox_inches="tight", pad_inches=0)
+            # plt.close()
+            img_buf = io.BytesIO()
+            plt.savefig(img_buf, format='png')
+
+            im = Image.open(img_buf)
+            # rgb_im = im.convert('RGB')
+            print(np.array(im).shape)
+            im.show(title="My Image")
+
+            img_buf.close()
             count += 1
+            return
             if count %50 == 0:
               print(f'{count} spectrograms produced')
 
@@ -66,6 +82,6 @@ def convert_wav_to_spectrogram(input_folder, output_folder):
 
 if __name__ == "__main__":
     # Usage example
-    input_folder = "../hq_clips 3"  # Replace with the actual input folder path
-    output_folder = "Spectrograms/hq/train"  # Replace with the actual output folder path
+    input_folder = "../hq_clips"  # Replace with the actual input folder path
+    output_folder = "Spectrograms/train/hq_train"  # Replace with the actual output folder path
     convert_wav_to_spectrogram(input_folder, output_folder)
