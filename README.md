@@ -1,7 +1,7 @@
-### AudioUpsampling
+# AudioUpsampling
 ## CS231N Final Project
 
-# Introduction:
+### Introduction:
 Audio upsampling, the act of improving the sound quality of an
 audio clip from a lower resolution, is a field of research garnering a
 modest amount of attention recently. Many approaches work
@@ -12,7 +12,7 @@ delicate form of audio, nor do they use an in-depth computer
 vision learning approach. To this end, we propose a novel
 computer vision learning method.
 
-# Problem Statement:
+### Problem Statement:
 We take music audio in the 8kHz range and convert this WAV-form audio input
 into mel spectrograms. We then run this image representation of the audio
 information through a convolutional neural net-based model to upsample the
@@ -22,7 +22,7 @@ GAN. We output generated mel-spectrograms which represent audio in the
 44.1kHz range, which images we can convert into audio for a final qualitative
 evaluation of our sound upsampling.
 
-# Dataset:
+### Dataset:
 We collected ~11 hours of dance music with
 sample rates of 44.1kHz. The music was
 processed by cutting each song into 10 second
@@ -37,7 +37,7 @@ SOTA upsampling models with. Our novel data
 set is a major contribution to upsampling music
 clips.
 
-# Methods:
+### Methods:
 To solve the upsampling task we employed two models: one
 a pure GAN architecture with the encoder, residual layers,
 and decoder, and the other a vision
@@ -49,7 +49,7 @@ and run through our architectures and loss is calculated using binary cross
 entropy. Our accuracy is determined through the standard peak signal-to-noise
 ratio.
 
-# Results:
+### Results:
 Our first learning is that the pure GAN architecture performs
 better than the vision transformer in terms of accuracy. The
 model does not quite reproduce the expected high-resolution
@@ -62,7 +62,7 @@ more wider than that of its GAN counterpart. It is also interesting to note that
 generator loss for the vision transformer is higher than the discriminator while the
 opposite is true for the GAN.
 
-# Conclusions:
+### Conclusions:
 Below we show an example generated mel-spectrogram. The bands can
 clearly be seen, but it does not quite resemble what a normal high-frequency
 spectrogram should. The color differentiation is due to the normalization of the
